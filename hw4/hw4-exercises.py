@@ -140,7 +140,6 @@ def movieInfo(movie):
     print "Metascore: " + movie['Metascore']
 
 
-
 print "--- 3e ---"
 ##5. use the function from (3d) to print the data for each movie
 for movie in post:
