@@ -58,46 +58,61 @@ class Post():
     #      to the short name of the user in the post dictionary. 
     #      Hint: see your poster() function from hw5-buildingblocks.py
     #      then uncomment the testing line in the main block at the end of the file
-
+        self.name = shortname(postdict["from"]["name"])
+            
 
     # (b): Write a method to return the comments count.
     #      Uncomment the following two lines, and also the
     #      corresponding line in the main block (below)
-#    def commentCount(self):
-#        """returns the number of comments"""
+    def commentCount(self):
+        """returns the number of comments"""
         # (b): fill in code here.  hint: None is a value, just like 0 or 'foo'
-     
+        #return len(postdict['comments']['data'])
+        if self.comments==None:
+            return 0
+        else:
+            return len(self.comments['data'])
     # (c): Write a method to return the likes count.
     #      Uncomment the following two lines, and also the
     #      corresponding line in the main block (below)
-#    def likeCount(self):
-#        """returns the number of likes"""
+    def likeCount(self):
+        """returns the number of likes"""
         # (c): fill in code here.
-
+        if self.likes==None:
+            return 0
+        else:
+            return len(self.likes['data'])
     # (d): Some messages are longer than 140 characters. If so, write a
     #      method to return a short message that consists of the first
     #      140 characters of the message plus elipses, e.g.
     #      "the first 140 characters..."
     #      Uncomment the following two lines, and also the
     #      corresponding line in the main block (below)
-#    def shortMessage(self):
-#        """returns the shortened (<=140 character) message"""
+    def shortMessage(self):
+        """returns the shortened (<=140 character) message"""
         # (d) fill in code here.
+        if len(self.message)> 140:
+            return self.message[0:140] + "..."
+        else:
+            return self.message
 
     def __str__(self):
         """string representation of the post"""
         s = '--- status update ---------\n'
         # uncomment the following lines after you write and test (a-d) [e]
-        #s += 'name: %s\n' % self.name                  # (a)
-        #s += 'comments: %s\n' % self.commentCount()  # (b)
-        #s += 'likes: %s\n' % self.likeCount()        # (c)
-        #s += 'message: %s\n' % self.shortMessage()    # (d)
+        s += 'name: %s\n' % self.name                  # (a)
+        s += 'comments: %s\n' % self.commentCount()  # (b)
+        s += 'likes: %s\n' % self.likeCount()        # (c)
+        s += 'message: %s\n' % self.shortMessage()    # (d)
         return s
 
 #     uncomment the following two lines
-#    def hasQuestion(self):
-#        """returns True if the message contains a '?'."""
+    def hasQuestion(self):
+        """returns True if the message contains a '?'."""
 #        (f) fill in code here
+        for char in self.message:
+            if char=='?':
+                return True
 
 
 
@@ -113,12 +128,18 @@ class Link(Post):
         self.url = postdict['link']
 
 #     uncomment the following two lines
-#    def __str__(self):
-#        """string representation of the Link post"""
+    def __str__(self):
+        """string representation of the Link post"""
 #        fill in code here (2.a)
 #        the string being returned should be similar to that of Post.__str__()
 #        except it should also print out the linked url (see PDF for details)
-
+        s = '--- link ---------\n'
+        s += 'name: %s\n' % self.name                  # (a)
+        s += 'comments: %s\n' % self.commentCount()  # (b)
+        s += 'likes: %s\n' % self.likeCount()        # (c)
+        s += 'message: %s\n' % self.shortMessage()    # (d)
+        s += 'linked url: %s\n' % self.url
+        return s
 ### Building Block 3: the Photo class
 class Photo(Post):
     """object representing a Photo post"""
@@ -160,15 +181,15 @@ if __name__ == '__main__':
     
     # uncomment the following two lines to test (1e)
     print "- short post -"
-#    print my_post_short
+    print my_post_short
     print "- long post -"
-#    print my_post_long
+    print my_post_long
     
     ## testing building block 2
     # sample Link to print
     # uncomment the next two lines to test 2a
-#    my_link = Link(postdicts[34])
-#    print my_link            # tests (2a)
+    my_link = Link(postdicts[34])
+    print my_link            # tests (2a)
     
     # testing building block 3
 #    my_photo = Photo(postdicts[1])
@@ -194,7 +215,7 @@ if __name__ == '__main__':
 #    displays thumbnail images that link back to the respective facebook photo
 #    include hcde310photos.html in your Canvas upload
 
-#    genPhotoPage(postobjects, 'hcde310photos.html')
+    genPhotoPage(postobjects, 'hcde310photos.html')
 
 
     ### Task 1: printing questions
@@ -206,7 +227,12 @@ if __name__ == '__main__':
     #    Name received # replies to their question:
     #    short message
     # hint: use your .hasQuestion() method
-
+    for post in first10:
+        if post.hasQuestion():
+            print "------------"
+            print post.name + " recieved " + str(post.commentCount()) + " replies to their question:"
+            print post.shortMessage()
+            print "------------"
 
     ### Task 2: counting and printing totals  (this is optional but strongly recommended for review)
     print ";;;;; Post, Comment, and Like counts per person ;;;;;;;"
